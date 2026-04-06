@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mansi Tank — Product Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0ede6;
+  --bg2:#e8e4db;
+  --white:#fafaf8;
+  --dark:#0d110f;
+  --mid:#1a1e1c;
+  --muted:#6b6a65;
+  --tan:#a89070;
+  --tan-btn:#b5a48c;
+  --tan-light:#d4c9b5;
+  --accent:#8c6e52;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--dark);overflow-x:hidden;cursor:none}
+
+/* ── CURSOR ── */
+#cur{position:fixed;width:10px;height:10px;background:var(--dark);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s}
+#cur-r{position:fixed;width:36px;height:36px;border:1.5px solid rgba(13,17,15,.4);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s}
+#cur.big{width:44px;height:44px;background:transparent;border:1.5px solid var(--dark)}
+#cur-r.big{width:64px;height:64px;opacity:.15}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;z-index:200;transition:background .4s,backdrop-filter .4s}
+nav.s{background:rgba(240,237,230,.9);backdrop-filter:blur(14px);border-bottom:1px solid rgba(0,0,0,.07)}
+.nav-brand{display:flex;align-items:center;gap:12px;opacity:0;animation:fu .7s .1s forwards}
+.nav-av{width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--tan-light);flex-shrink:0}
+.nav-av img{width:100%;height:100%;object-fit:cover}
+.nav-nm{font-family:'Syne',sans-serif;font-size:15px;font-weight:600}
+.nav-r{display:flex;align-items:center;gap:40px;opacity:0;animation:fu .7s .2s forwards}
+.nl{text-decoration:none;font-size:14px;color:var(--mid);position:relative;transition:color .3s}
+.nl::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--tan);transition:width .3s}
+.nl:hover{color:var(--tan)}.nl:hover::after{width:100%}
+.btn-res{text-decoration:none;font-size:13px;font-weight:500;color:var(--white);background:var(--tan-btn);border-radius:100px;padding:10px 24px;transition:all .3s}
+.btn-res:hover{background:var(--dark);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:76px;overflow:hidden}
+.h-img-wrap{width:100%;max-width:920px;height:60vh;overflow:hidden;border-radius:0 0 12px 12px;opacity:0;transform:translateY(28px);animation:ru 1.2s cubic-bezier(.22,1,.36,1) .3s forwards}
+.h-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center 18%;transform:scale(1.05);transition:transform 10s ease}
+.h-img-wrap:hover img{transform:scale(1)}
+.h-bottom{width:100%;padding:44px 52px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:32px}
+.h-role{font-size:14px;color:var(--muted);opacity:0;animation:fu .8s .8s forwards}
+.h-name-block{opacity:0;animation:ru .9s .6s forwards}
+.h-name{font-family:'Syne',sans-serif;font-size:clamp(60px,8vw,108px);font-weight:800;line-height:.95;letter-spacing:-.025em}
+.h-desc-block{max-width:340px;opacity:0;animation:fu .9s 1s forwards}
+.h-desc{font-size:15px;line-height:1.78;color:var(--muted);font-weight:300;margin-bottom:22px}
+.socials{display:flex;gap:10px}
+.soc-btn{width:40px;height:40px;border-radius:8px;border:1px solid rgba(0,0,0,.15);background:var(--white);display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--mid);font-size:12px;font-weight:600;transition:all .3s}
+.soc-btn:hover{background:var(--dark);color:var(--white);border-color:var(--dark);transform:translateY(-2px)}
+.soc-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+/* ── MARQUEE ── */
+.mq-wrap{overflow:hidden;padding:18px 0;border-top:1px solid rgba(0,0,0,.08);border-bottom:1px solid rgba(0,0,0,.08);margin-top:52px;background:var(--bg)}
+.mq-track{display:flex;gap:44px;animation:mq 24s linear infinite;width:max-content}
+.mq-item{font-family:'Syne',sans-serif;font-size:14px;font-weight:600;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:14px;white-space:nowrap}
+.mq-dot{width:5px;height:5px;border-radius:50%;background:var(--tan);flex-shrink:0}
+
+/* ── WORK ── */
+.work-sec{background:var(--bg2);padding:80px 52px 60px}
+.sec-tag{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--tan);font-weight:500;margin-bottom:14px}
+.sec-title{font-family:'Syne',sans-serif;font-size:clamp(32px,4.5vw,60px);font-weight:800;line-height:1.05;margin-bottom:52px}
+.sec-title span{color:var(--accent)}
+.w-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.w-card{background:var(--white);border-radius:14px;overflow:hidden;cursor:pointer;opacity:0;transform:translateY(36px);transition:opacity .6s,transform .6s,box-shadow .3s}
+.w-card.vis{opacity:1;transform:translateY(0)}
+.w-card:hover{transform:translateY(-6px)!important;box-shadow:0 24px 64px rgba(0,0,0,.13)}
+.w-card:nth-child(1){transition-delay:.05s}.w-card:nth-child(2){transition-delay:.15s}
+.w-card:nth-child(3){transition-delay:.25s}.w-card:nth-child(4){transition-delay:.35s}
+.w-img{width:100%;height:260px;overflow:hidden}
+.w-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.w-card:hover .w-img img{transform:scale(1.07)}
+.w-body{padding:18px 22px 22px}
+.w-tag{font-size:12px;color:var(--muted);margin-bottom:5px}
+.w-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700}
+.w-cta{display:flex;justify-content:center;margin-top:52px}
+.btn-all{background:var(--dark);color:var(--white);border:none;padding:15px 48px;border-radius:100px;font-family:'Syne',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;letter-spacing:.04em;transition:all .3s;display:inline-block}
+.btn-all:hover{background:var(--tan-btn);transform:translateY(-2px)}
+
+/* ── WORK THUMBNAILS ── */
+.th-snap{width:100%;height:100%;background:#f0e050;display:flex;align-items:center;justify-content:center}
+.th-dmart{width:100%;height:100%;background:#f2f0ea;display:flex;align-items:center;justify-content:center}
+.th-yamaha{width:100%;height:100%;background:linear-gradient(135deg,#cc0000,#8b0000);display:flex;align-items:center;justify-content:center}
+.th-pet{width:100%;height:100%;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+
+/* ── JOURNEY (ABOUT) ── */
+.journey-sec{background:var(--white);padding:100px 52px;position:relative;overflow:hidden}
+.j-badge-wrap{position:absolute;top:72px;right:56px;width:110px;height:110px}
+.j-badge-wrap svg{animation:spin 12s linear infinite}
+.j-inner-img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;overflow:hidden;border:2px solid var(--bg2)}
+.j-inner-img img{width:100%;height:100%;object-fit:cover}
+.j-title{font-family:'Syne',sans-serif;font-size:clamp(40px,5vw,72px);font-weight:800;margin-bottom:60px;line-height:1}
+.j-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.j-lbl{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:18px}
+.exp-item{padding:18px 0;border-bottom:1px solid rgba(0,0,0,.08);display:flex;align-items:center;gap:14px;opacity:0;transform:translateX(-18px);transition:all .5s}
+.exp-item.vis{opacity:1;transform:translateX(0)}
+.exp-item:nth-child(1){transition-delay:.05s}.exp-item:nth-child(2){transition-delay:.15s}.exp-item:nth-child(3){transition-delay:.25s}
+.exp-ico{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;background:var(--bg2);flex-shrink:0}
+.exp-co{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+.exp-role{font-size:13px;color:var(--muted);margin-top:2px}
+.exp-date{font-size:12px;color:var(--muted);margin-left:auto;white-space:nowrap}
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.sk-card{background:var(--bg);border:1px solid rgba(0,0,0,.08);border-radius:12px;padding:16px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;transform:scale(.9);transition:all .4s;cursor:default}
+.sk-card.vis{opacity:1;transform:scale(1)}
+.sk-card:hover{border-color:var(--tan-light);transform:translateY(-3px)!important;box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.sk-card:nth-child(1){transition-delay:.04s}.sk-card:nth-child(2){transition-delay:.08s}.sk-card:nth-child(3){transition-delay:.12s}
+.sk-card:nth-child(4){transition-delay:.16s}.sk-card:nth-child(5){transition-delay:.20s}.sk-card:nth-child(6){transition-delay:.24s}
+.sk-card:nth-child(7){transition-delay:.28s}.sk-card:nth-child(8){transition-delay:.32s}.sk-card:nth-child(9){transition-delay:.36s}
+.sk-ico{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700}
+.sk-nm{font-size:11px;color:var(--mid);font-weight:400;letter-spacing:.02em}
+
+/* ── ABOUT ME ── */
+.about-sec{background:var(--bg);padding:100px 52px}
+.about-head{text-align:center;margin-bottom:72px;opacity:0;transform:translateY(24px);transition:all .7s}
+.about-head.vis{opacity:1;transform:translateY(0)}
+.about-head-top{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,68px);font-weight:800;line-height:1;display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:8px}
+.word-box{background:rgba(0,0,0,.08);border-radius:6px;padding:0 12px;font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,68px);font-weight:800}
+.about-head-sub{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,68px);font-weight:800;color:var(--accent)}
+.about-inner{display:grid;grid-template-columns:1.4fr 1fr;gap:60px;align-items:start}
+.about-text{font-size:15px;line-height:1.82;color:var(--muted);font-weight:300}
+.about-text p{margin-bottom:22px}
+.about-text strong{color:var(--dark);font-weight:500}
+.about-hl{background:rgba(100,180,200,.18);border-radius:4px;padding:1px 4px;color:var(--mid)}
+.about-sec-head{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;color:var(--dark)}
+.about-imgs{display:flex;flex-direction:column;gap:14px}
+.about-img-card{border-radius:14px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.1);opacity:0;transform:translateX(24px);transition:all .6s}
+.about-img-card.vis{opacity:1;transform:translateX(0)}
+.about-img-card:nth-child(2){transition-delay:.15s}
+.about-img-card img{width:100%;display:block;height:200px;object-fit:cover}
+
+/* ── BEYOND PIXELS ── */
+.pixels-sec{background:var(--white);padding:80px 52px 100px;text-align:center}
+.pixels-title{font-family:'Syne',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:800;margin-bottom:60px;opacity:0;transition:all .7s}
+.pixels-title.vis{opacity:1}
+.pixels-title span{color:var(--accent)}
+.pixels-strip{display:flex;gap:14px;overflow-x:auto;padding:10px 0 20px;justify-content:center;flex-wrap:nowrap;scroll-snap-type:x mandatory;-ms-overflow-style:none;scrollbar-width:none}
+.pixels-strip::-webkit-scrollbar{display:none}
+.px-card{flex-shrink:0;width:160px;height:220px;border-radius:16px;overflow:hidden;scroll-snap-align:start;opacity:0;transform:translateY(30px) rotate(var(--rot,0deg));transition:all .6s;cursor:pointer}
+.px-card.vis{opacity:1;transform:translateY(0) rotate(var(--rot,0deg))}
+.px-card:hover{transform:translateY(-8px) rotate(0deg)!important;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.px-card img{width:100%;height:100%;object-fit:cover}
+.px-card:nth-child(1){--rot:-4deg;transition-delay:.05s}.px-card:nth-child(2){--rot:2deg;transition-delay:.1s}
+.px-card:nth-child(3){--rot:-2deg;transition-delay:.15s}.px-card:nth-child(4){--rot:3deg;transition-delay:.2s}
+.px-card:nth-child(5){--rot:-3deg;transition-delay:.25s}.px-card:nth-child(6){--rot:1deg;transition-delay:.3s}
+.px-card:nth-child(7){--rot:-2deg;transition-delay:.35s}
+
+/* Placeholder pixel cards */
+.px-bg-1{background:linear-gradient(135deg,#f9e4d4,#f5c9a8)}
+.px-bg-2{background:linear-gradient(135deg,#d4e8c4,#b8d9a0)}
+.px-bg-3{background:linear-gradient(135deg,#c4d8e8,#a0c0d9)}
+.px-bg-4{background:linear-gradient(135deg,#e8c4d4,#d9a0b8)}
+.px-bg-5{background:linear-gradient(135deg,#e8e4c4,#d9d4a0)}
+.px-bg-6{background:linear-gradient(135deg,#c4c4e8,#a0a0d9)}
+.px-bg-7{background:linear-gradient(135deg,#e8d4c4,#d9b8a0)}
+
+/* ── CURIOUS CREATIONS ── */
+.curious-sec{background:var(--bg);padding:100px 52px}
+.curious-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.curious-title{font-family:'Syne',sans-serif;font-size:clamp(40px,5.5vw,80px);font-weight:800;line-height:1;margin-bottom:20px}
+.curious-desc{font-size:15px;color:var(--muted);line-height:1.75;max-width:320px;font-weight:300}
+.curious-card{border-radius:20px;overflow:hidden;opacity:0;transform:rotate(5deg) scale(.95);transition:all .8s cubic-bezier(.22,1,.36,1);box-shadow:0 28px 72px rgba(0,0,0,.16);cursor:pointer}
+.curious-card.vis{opacity:1;transform:rotate(2.5deg) scale(1)}
+.curious-card:hover{transform:rotate(0deg) scale(1.02)!important}
+.cc-inner{background:#faf5ef;padding:24px}
+.cc-top{border-radius:12px;overflow:hidden;height:200px;background:#f9d5c5;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.cc-label{background:var(--dark);color:var(--white);padding:14px 20px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:.04em}
+
+/* ── FOOTER ── */
+footer{background:#0f1614;padding:80px 52px 48px;color:var(--white);position:relative;overflow:hidden}
+footer::before{content:'';position:absolute;top:0;left:0;right:0;height:120px;background:var(--bg);border-radius:0 0 60% 60%;transform:translateY(-60%)}
+.foot-inner{position:relative;z-index:1}
+.foot-top{display:grid;grid-template-columns:1.5fr 1fr;gap:60px;margin-bottom:60px;padding-top:20px}
+.foot-cta{font-family:'Syne',sans-serif;font-size:clamp(28px,3.5vw,50px);font-weight:800;line-height:1.1}
+.foot-cta span{color:var(--tan-btn)}
+.foot-email{margin-top:24px;font-size:15px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .3s;display:inline-block}
+.foot-email:hover{color:var(--white)}
+.foot-cols{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding-top:8px}
+.foot-col-title{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px;font-weight:500}
+.foot-links{list-style:none;display:flex;flex-direction:column;gap:12px}
+.foot-links a{text-decoration:none;color:rgba(255,255,255,.55);font-size:15px;transition:color .3s}
+.foot-links a:hover{color:var(--white)}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.foot-copy{font-size:13px;color:rgba(255,255,255,.3)}
+
+/* ── KEYFRAMES ── */
+@keyframes fu{from{opacity:0}to{opacity:1}}
+@keyframes ru{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:820px){
+  nav{padding:16px 24px}
+  .h-bottom{flex-direction:column;padding:28px 24px 0;gap:20px}
+  .h-desc-block{max-width:100%}
+  .w-grid,.j-grid,.about-inner,.curious-inner,.foot-top{grid-template-columns:1fr}
+  .work-sec,.journey-sec,.about-sec,.pixels-sec,.curious-sec{padding:60px 24px}
+  footer{padding:60px 24px 40px}
+  .foot-cols{grid-template-columns:1fr 1fr}
+  .pixels-strip{justify-content:flex-start;padding:10px 24px 20px}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- ─── NAV ─── -->
+<nav id="nav">
+  <div class="nav-brand">
+    <div class="nav-av">
+      <img src="1775451982115_image.png" alt="Mansi" onerror="this.style.display='none'"/>
+    </div>
+    <span class="nav-nm">Mansi.</span>
+  </div>
+  <div class="nav-r">
+    <a href="#work" class="nl">Work</a>
+    <a href="#about" class="nl">About</a>
+    <a href="#" class="btn-res">Resume</a>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="h-img-wrap">
+    <img src="1775451982115_image.png" alt="Mansi Tank"/>
+  </div>
+  <div class="h-bottom">
+    <p class="h-role">Product designer</p>
+    <div class="h-name-block">
+      <h1 class="h-name">Mansi<br>Tank</h1>
+    </div>
+    <div class="h-desc-block">
+      <p class="h-desc">A curious UX Designer who believes in constantly evolving and turning every challenge into a canvas & every experience into a masterpiece.</p>
+      <div class="socials">
+        <a href="#" class="soc-btn" title="LinkedIn">in</a>
+        <a href="#" class="soc-btn" title="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#" class="soc-btn" title="Behance" style="font-size:11px;letter-spacing:-.5px">Bē</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <div class="mq-item"><span class="mq-dot"></span>UX Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Product Thinking</div>
+    <div class="mq-item"><span class="mq-dot"></span>Visual Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Interaction Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Design Systems</div>
+    <div class="mq-item"><span class="mq-dot"></span>Prototyping</div>
+    <div class="mq-item"><span class="mq-dot"></span>User Research</div>
+    <div class="mq-item"><span class="mq-dot"></span>Human Centered Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>UX Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Product Thinking</div>
+    <div class="mq-item"><span class="mq-dot"></span>Visual Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Interaction Design</div>
+    <div class="mq-item"><span class="mq-dot"></span>Design Systems</div>
+    <div class="mq-item"><span class="mq-dot"></span>Prototyping</div>
+    <div class="mq-item"><span class="mq-dot"></span>User Research</div>
+    <div class="mq-item"><span class="mq-dot"></span>Human Centered Design</div>
+  </div>
+</div>
+
+<!-- ─── WORK ─── -->
+<section class="work-sec" id="work">
+  <p class="sec-tag">Selected Work</p>
+  <h2 class="sec-title">A peak into My<br>playground of <span>Work</span></h2>
+  <div class="w-grid">
+
+    <div class="w-card">
+      <div class="w-img">
+        <img src="1775452009972_image.png" alt="Snapchat" onerror="this.parentElement.innerHTML='<div class=th-snap><div style=font-family:Syne,sans-serif;font-size:56px;font-weight:900;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.25)>SNAP</div></div>'"/>
+      </div>
+      <div class="w-body">
+        <p class="w-tag">Feature Enhancement</p>
+        <h3 class="w-title">Snapchat</h3>
+      </div>
+    </div>
+
+    <div class="w-card">
+      <div class="w-img">
+        <img src="1775452017194_image.png" alt="DMart" onerror="this.parentElement.innerHTML='<div class=th-dmart><div style=background:#2d6e3e;color:#fff;padding:16px 32px;font-family:Syne,sans-serif;font-size:22px;font-weight:700;border-radius:8px>DMart</div></div>'"/>
+      </div>
+      <div class="w-body">
+        <p class="w-tag">Retail & Service Design</p>
+        <h3 class="w-title">DMart</h3>
+      </div>
+    </div>
+
+    <div class="w-card">
+      <div class="w-img">
+        <img src="1775452025202_image.png" alt="Yamaha Aerox 155" onerror="this.parentElement.innerHTML='<div class=th-yamaha><div style=font-family:Syne,sans-serif;font-size:44px;font-weight:900;color:#fff;letter-spacing:-1px>YAMAHA</div></div>'"/>
+      </div>
+      <div class="w-body">
+        <p class="w-tag">Automotive UX/UI Design (HMI)</p>
+        <h3 class="w-title">Yamaha Aerox 155</h3>
+      </div>
+    </div>
+
+    <div class="w-card">
+      <div class="w-img">
+        <img src="1775452034173_image.png" alt="Pet Adoption" onerror="this.parentElement.innerHTML='<div class=th-pet><div style=color:rgba(255,255,255,.7);font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-family:Syne,sans-serif>Pet Adoption System</div></div>'"/>
+      </div>
+      <div class="w-body">
+        <p class="w-tag">System Thinking for Animal Welfare</p>
+        <h3 class="w-title">Pet Adoption System</h3>
+      </div>
+    </div>
+
+  </div>
+  <div class="w-cta">
+    <a href="#" class="btn-all">View all Projects</a>
+  </div>
+</section>
+
+<!-- ─── DESIGN JOURNEY ─── -->
+<section class="journey-sec" id="journey">
+
+  <div class="j-badge-wrap">
+    <svg viewBox="0 0 110 110" width="110" height="110">
+      <defs><path id="cp" d="M55,55 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+      <text font-size="10.5" font-weight="700" fill="#0d110f" font-family="Syne,sans-serif" letter-spacing="4">
+        <textPath href="#cp">Open to Work ✦ Open to Work ✦ </textPath>
+      </text>
+    </svg>
+    <div class="j-inner-img">
+      <img src="1775451982115_image.png" alt="Mansi" onerror="this.style.display='none'"/>
+    </div>
+  </div>
+
+  <h2 class="j-title">Design<br>Journey</h2>
+
+  <div class="j-grid">
+    <div>
+      <p class="j-lbl">📖 Experience</p>
+
+      <div class="exp-item">
+        <div class="exp-ico">🔷</div>
+        <div style="flex:1">
+          <p class="exp-co">Capgemini</p>
+          <p class="exp-role">UX/UI Designer</p>
+        </div>
+        <span class="exp-date">Aug 25' – Present</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-ico">🔴</div>
+        <div style="flex:1">
+          <p class="exp-co">Pepper Square</p>
+          <p class="exp-role">UX/UI Designer Intern</p>
+        </div>
+        <span class="exp-date">Feb 25' – Jun 25'</span>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-ico" style="font-size:11px;font-weight:800;background:#1a1a1a;color:#fff;border-radius:6px">AS</div>
+        <div style="flex:1">
+          <p class="exp-co">Avair Sense</p>
+          <p class="exp-role">UX/UI Designer Intern</p>
+        </div>
+        <span class="exp-date">May 24' – July 24'</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="j-lbl">🔧 Skill Set</p>
+      <div class="sk-grid">
+        <div class="sk-card"><div class="sk-ico">🎨</div><span class="sk-nm">Figma</span></div>
+        <div class="sk-card"><div class="sk-ico">▣</div><span class="sk-nm">Framer</span></div>
+        <div class="sk-card"><div class="sk-ico" style="background:#ffe500;font-size:14px">📋</div><span class="sk-nm">Miro</span></div>
+        <div class="sk-card"><div class="sk-ico" style="color:#ff7c00;font-weight:900;font-family:serif;font-size:22px">A</div><span class="sk-nm">Illustrator</span></div>
+        <div class="sk-card"><div class="sk-ico" style="color:#31a8ff;font-weight:700;font-size:15px">Ps</div><span class="sk-nm">Photoshop</span></div>
+        <div class="sk-card"><div class="sk-ico" style="color:#ff3366;font-weight:700;font-size:14px">Id</div><span class="sk-nm">InDesign</span></div>
+        <div class="sk-card"><div class="sk-ico" style="font-weight:800;font-size:15px">N</div><span class="sk-nm">Notion</span></div>
+        <div class="sk-card"><div class="sk-ico">🌀</div><span class="sk-nm">Spline</span></div>
+        <div class="sk-card"><div class="sk-ico">▶</div><span class="sk-nm">Protopie</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ME ─── -->
+<section class="about-sec" id="about">
+
+  <div class="about-head">
+    <div class="about-head-top">
+      <span class="word-box">Here's</span>
+      <span class="word-box">a</span>
+      <span class="word-box">little</span>
+      <span class="word-box">bit</span>
+    </div>
+    <div class="about-head-sub">About Me</div>
+  </div>
+
+  <div class="about-inner">
+    <div>
+      <p class="about-sec-head">My Journey So Far</p>
+      <div class="about-text">
+        <p>Let's start with my name, 'Mansi' rooted in the Sanskrit word '<strong>मनस्</strong>' (manas) representing the <span class="about-hl">harmony of heart and mind</span>, symbolizing creativity, wisdom and thoughtfulness, like the energy I bring to my work ⚡</p>
+        <p>My journey began with love for art, nurtured by my mom and led me to a <span class="about-hl">Bachelor's in Textiles and Apparel Design</span>. Over time, my curiosity for digital design sparked and that's when I found my true calling — Product Design 👾. Now, as a <span class="about-hl">Master's student in Human-Centered Design</span>, I know this is where I'm meant to be ❤️</p>
+        <p>Design isn't just what I do, it's who I am. I can't wait to see where it takes me next! 🚀</p>
+      </div>
+
+      <p class="about-sec-head" style="margin-top:40px">What I Do For Fun?</p>
+      <div class="about-text">
+        <p>When I'm not immersed in design, you'll find me staying active whether it's <span class="about-hl">fitness 🏋️, reading 📖, or exploring places 🗺️</span>. I also love diving into creative adventures like pottery and trekking. On quiet days, I reconnect with my roots through <span class="about-hl">embroidery 🪡, illustrating or painting 🎨</span></p>
+        <p>Got something on your mind? Let's chat 💬 over a cup of chai ☕ and dive into fun, meaningful conversations!</p>
+        <p>Life's a journey, and I'm all in — learning and growing with every step! ✨</p>
+      </div>
+    </div>
+
+    <div class="about-imgs">
+      <div class="about-img-card">
+        <img src="1775452092019_image.png" alt="Mansi at pottery" onerror="this.parentElement.style.background='#e8d8c8';this.parentElement.style.height='200px';this.remove()"/>
+      </div>
+      <div class="about-img-card">
+        <img src="1775452120703_image.png" alt="Mansi sketching" onerror="this.parentElement.style.background='#d8e8d0';this.parentElement.style.height='200px';this.remove()"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── BEYOND PIXELS ─── -->
+<section class="pixels-sec">
+  <h2 class="pixels-title">My life <span>beyond Pixels</span></h2>
+  <div class="pixels-strip">
+    <div class="px-card"><div class="px-bg-1" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">🧘</div></div>
+    <div class="px-card"><div class="px-bg-2" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">🌻</div></div>
+    <div class="px-card"><div class="px-bg-3" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">⛳</div></div>
+    <div class="px-card"><div class="px-bg-4" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">🪡</div></div>
+    <div class="px-card"><div class="px-bg-5" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">💪</div></div>
+    <div class="px-card"><div class="px-bg-6" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">📚</div></div>
+    <div class="px-card"><div class="px-bg-7" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px">🎨</div></div>
+  </div>
+</section>
+
+<!-- ─── CURIOUS CREATIONS ─── -->
+<section class="curious-sec">
+  <div class="curious-inner">
+    <div>
+      <h2 class="curious-title">Curious<br>Creations</h2>
+      <p class="curious-desc">Beyond UX — exploring illustration, print development, and experimental visual work where every idea gets to breathe.</p>
+    </div>
+    <div class="curious-card">
+      <div class="cc-inner">
+        <div class="cc-top">
+          <div style="text-align:center;padding:20px">
+            <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#2d6e5e;margin-bottom:14px">FLORA & FAUNA</div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:14px">
+              <div style="width:22px;height:22px;border-radius:50%;background:#f4a0b0"></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#5bbfb5"></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#f4c840"></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#2d6e40"></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#1a1a1a"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div style="height:56px;border-radius:8px;background:#d4e8c4;display:flex;align-items:center;justify-content:center;font-size:10px;color:#4a7a4a;font-weight:500">Swatch</div>
+              <div style="height:56px;border-radius:8px;background:#fce8e0;display:flex;align-items:center;justify-content:center;font-size:10px;color:#a06050;font-weight:500">Mockup</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cc-label">Print Development — Flora & Fauna</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-top">
+      <div>
+        <h2 class="foot-cta">Let's create something<br><span>unforgettable</span> together.</h2>
+        <a href="mailto:workwithmansitank@gmail.com" class="foot-email">workwithmansitank@gmail.com →</a>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <p class="foot-col-title">Get in Touch</p>
+          <ul class="foot-links">
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Behance</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="foot-col-title">Explore</p>
+          <ul class="foot-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-copy">© Copyright 2025 by Mansi</span>
+      <span class="foot-copy">workwithmansitank@gmail.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),cr=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.w-card,.sk-card,.soc-btn,.curious-card,.px-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.classList.add('big');cr.classList.add('big')});
+  el.addEventListener('mouseleave',()=>{cur.classList.remove('big');cr.classList.remove('big')});
+});
+
+/* ── NAVBAR SCROLL ── */
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('s',scrollY>60)});
+
+/* ── INTERSECTION OBSERVER ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+},{threshold:0.12});
+document.querySelectorAll('.w-card,.exp-item,.sk-card,.curious-card,.about-head,.about-img-card,.pixels-title,.px-card').forEach(el=>obs.observe(el));
+
+/* ── WORD BOX STAGGER ANIMATION ── */
+const wordObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.word-box').forEach((w,i)=>{
+        setTimeout(()=>{w.style.opacity='1';w.style.transform='translateY(0)'},i*80);
+      });
+      e.target.style.opacity='1';e.target.style.transform='translateY(0)';
+    }
+  });
+},{threshold:0.2});
+document.querySelectorAll('.about-head').forEach(el=>{
+  el.querySelectorAll('.word-box').forEach(w=>{w.style.opacity='0';w.style.transform='translateY(12px)';w.style.transition='all .5s ease'});
+  wordObs.observe(el);
+});
+
+/* ── PARALLAX HERO ── */
+window.addEventListener('scroll',()=>{
+  const img=document.querySelector('.h-img-wrap img');
+  if(img)img.style.transform=`scale(1.04) translateY(${scrollY*.08}px)`;
+});
+</script>
+</body>
+</html>
