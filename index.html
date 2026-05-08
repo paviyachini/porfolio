@@ -92,6 +92,7 @@ nav{
   letter-spacing:.08em;text-transform:uppercase;cursor:none;
   transition:transform .3s,box-shadow .3s;
   box-shadow:0 0 20px rgba(139,92,246,.25);
+  text-decoration:none;display:inline-flex;align-items:center;
 }
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(139,92,246,.45);}
 
@@ -328,33 +329,108 @@ section{position:relative;z-index:1;}
 .tag-pill:hover{border-color:var(--v1);color:var(--v2);background:rgba(139,92,246,.08);}
 
 /* ============================================================
-   TOOLS
+   TOOLS — REDESIGNED WITH REAL TOOL ICONS
 ============================================================ */
-#tools{background:linear-gradient(180deg,var(--bg2),var(--bg3));overflow:hidden;}
-.tools-wrapper{position:relative;height:580px;margin-top:3rem;}
-.tools-canvas{position:relative;width:100%;height:100%;}
-.hub{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;z-index:3;background:rgba(10,9,32,.95);box-shadow:0 0 0 16px rgba(139,92,246,.05),0 0 0 36px rgba(139,92,246,.03),0 0 80px rgba(139,92,246,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;border:1px solid rgba(139,92,246,.3);}
+#tools{background:linear-gradient(180deg,var(--bg2),var(--bg3));overflow:hidden;padding:6rem 0 7rem;}
+.tools-header{text-align:center;padding:0 2rem;margin-bottom:4rem;}
+.tools-header .slabel{justify-content:center;}
+.tools-orbital{
+  position:relative;
+  width:min(700px,90vw);
+  height:min(700px,90vw);
+  margin:0 auto;
+}
+/* Orbital rings decoration */
+.orb-ring{
+  position:absolute;border-radius:50%;border:1px dashed rgba(139,92,246,.15);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  animation:orb-spin 30s linear infinite;
+}
+.orb-ring:nth-child(2){animation-duration:20s;animation-direction:reverse;}
+@keyframes orb-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* Center hub */
+.orb-hub{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:100px;height:100px;border-radius:50%;z-index:5;
+  background:rgba(10,9,32,.95);
+  box-shadow:0 0 0 20px rgba(139,92,246,.04),0 0 0 40px rgba(139,92,246,.02),0 0 60px rgba(139,92,246,.2);
+  border:1px solid rgba(139,92,246,.35);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;
+}
+.orb-hub-pulse{
+  position:absolute;inset:-4px;border-radius:50%;
+  border:1.5px solid rgba(139,92,246,.4);
+  animation:hubPulse 3s ease-in-out infinite;
+}
+@keyframes hubPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.25);opacity:0}}
 .hub-label{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;}
 .hub-val{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:.08em;background:var(--g1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hub-pulse{position:absolute;inset:-3px;border-radius:50%;border:1px solid rgba(139,92,246,.4);animation:hubPulse 3s ease-in-out infinite;}
-@keyframes hubPulse{0%,100%{transform:scale(1);opacity:.4}50%{transform:scale(1.18);opacity:0}}
-#connSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
-.tool-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:.35rem;cursor:none;z-index:4;transition:opacity .6s,transform .6s cubic-bezier(.34,1.56,.64,1);opacity:0;transform:translate(-50%,-50%) scale(0);}
-.tool-node.tn-vis{opacity:1;transform:translate(-50%,-50%) scale(1);}
-.tn-box{width:60px;height:60px;border-radius:14px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.45rem;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;}
-.tn-box::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle,rgba(139,92,246,.4),transparent 70%);opacity:0;transform:scale(0);transition:opacity .4s,transform .4s;}
+
+/* Tool nodes */
+.tool-node{
+  position:absolute;
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  cursor:none;z-index:4;
+  opacity:0;
+  transform:scale(0);
+  transition:opacity .6s cubic-bezier(.34,1.56,.64,1),transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+.tool-node.tn-vis{opacity:1;transform:scale(1);}
+
+.tn-box{
+  width:72px;height:72px;border-radius:18px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .4s,box-shadow .4s;
+}
+.tn-box img{width:44px;height:44px;object-fit:contain;display:block;pointer-events:none;}
+.tn-box svg-icon{width:44px;height:44px;}
+.tn-box::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;
+  background:radial-gradient(circle,rgba(139,92,246,.5),transparent 70%);
+  opacity:0;transform:scale(0);transition:opacity .4s,transform .4s;
+}
 .tool-node:hover .tn-box::before{opacity:1;transform:scale(1);}
-.tool-node:hover .tn-box{transform:translateY(-10px) scale(1.12);border-color:rgba(139,92,246,.7);box-shadow:0 16px 40px rgba(139,92,246,.25);}
-.tn-label{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--muted);letter-spacing:.06em;text-align:center;transition:color .3s;}
+.tool-node:hover .tn-box{
+  transform:translateY(-12px) scale(1.15);
+  border-color:rgba(139,92,246,.7);
+  box-shadow:0 20px 50px rgba(139,92,246,.3);
+}
+.tn-label{
+  font-family:'DM Mono',monospace;font-size:.65rem;
+  color:var(--muted);letter-spacing:.06em;text-align:center;
+  transition:color .3s;white-space:nowrap;
+}
 .tool-node:hover .tn-label{color:var(--v2);}
-@keyframes nodeFloat1{0%,100%{translate:0 0}50%{translate:0 -7px}}
-@keyframes nodeFloat2{0%,100%{translate:0 0}50%{translate:0 5px}}
-.tool-node:nth-child(odd) .tn-box{animation:nodeFloat1 3.8s ease-in-out infinite;}
-.tool-node:nth-child(even) .tn-box{animation:nodeFloat2 4.4s ease-in-out infinite;}
-.tools-grid-m{display:none;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem;}
-.tgm{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem;text-align:center;transition:border-color .3s,transform .3s;}
+
+/* Float animations */
+@keyframes float1{0%,100%{translate:0 0}50%{translate:0 -8px}}
+@keyframes float2{0%,100%{translate:0 0}50%{translate:0 6px}}
+@keyframes float3{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.tool-node:nth-child(odd) .tn-box{animation:float1 3.8s ease-in-out infinite;}
+.tool-node:nth-child(even) .tn-box{animation:float2 4.4s ease-in-out infinite;}
+.tool-node:nth-child(3n) .tn-box{animation:float3 5s ease-in-out infinite;}
+
+/* Connection SVG */
+#orb-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+
+/* Mobile grid fallback */
+.tools-grid-m{
+  display:none;
+  grid-template-columns:repeat(3,1fr);gap:1.2rem;
+  max-width:600px;margin:0 auto;padding:0 2rem;
+}
+.tgm{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:1.4rem 1rem;text-align:center;
+  transition:border-color .3s,transform .3s;
+}
 .tgm:hover{border-color:rgba(139,92,246,.4);transform:translateY(-4px);}
-.tgm .ti{font-size:1.5rem;margin-bottom:.4rem;}
+.tgm .ti{width:44px;height:44px;margin:0 auto .5rem;display:flex;align-items:center;justify-content:center;}
+.tgm .ti img{width:100%;height:100%;object-fit:contain;}
 .tgm .tn{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--muted);}
 
 /* ============================================================
@@ -379,45 +455,32 @@ section{position:relative;z-index:1;}
 .pc:nth-child(4).pcv{transition-delay:.30s;}
 .pc:hover{box-shadow:0 40px 90px rgba(0,0,0,.7);}
 
-/* ✅ FIXED THUMBNAIL */
 .pthumb{
-  width:100%;
-  height:280px;
-  position:relative;
-  overflow:hidden;
-  flex-shrink:0;
-  display:block;
+  width:100%;height:280px;position:relative;overflow:hidden;flex-shrink:0;display:block;
 }
 .pthumb .pcover{
   position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;object-position:center top;
-  display:block;
-  transition:transform .65s cubic-bezier(.16,1,.3,1);
-  z-index:1;
+  object-fit:cover;object-position:center top;display:block;
+  transition:transform .65s cubic-bezier(.16,1,.3,1);z-index:1;
 }
 .pc:hover .pcover{transform:scale(1.07);}
-
 .pthumb-fallback{
   position:absolute;inset:0;width:100%;height:100%;
-  display:flex;align-items:center;justify-content:center;
-  z-index:0;
+  display:flex;align-items:center;justify-content:center;z-index:0;
 }
 .ga-fb{background:linear-gradient(135deg,#1a0938,#3b1275,#8B5CF6);}
 .gb-fb{background:linear-gradient(135deg,#081528,#0d3d6e,#06B6D4);}
 .gc-fb{background:linear-gradient(135deg,#28082e,#6b1a5b,#EC4899);}
 .gd-fb{background:linear-gradient(135deg,#1e1008,#6e3d0b,#F97316);}
-
 .pthumb::before{
   content:'';position:absolute;inset:0;background:var(--bg3);z-index:3;
-  transform:scaleX(1);transform-origin:left;
-  transition:transform 1s cubic-bezier(.77,0,.175,1);
+  transform:scaleX(1);transform-origin:left;transition:transform 1s cubic-bezier(.77,0,.175,1);
 }
 .pc.pcv .pthumb::before{transform:scaleX(0);transform-origin:right;}
 .pc:nth-child(1).pcv .pthumb::before{transition-delay:.18s;}
 .pc:nth-child(2).pcv .pthumb::before{transition-delay:.28s;}
 .pc:nth-child(3).pcv .pthumb::before{transition-delay:.38s;}
 .pc:nth-child(4).pcv .pthumb::before{transition-delay:.48s;}
-
 .pthumb-link{
   position:absolute;inset:0;z-index:4;
   background:rgba(6,6,18,.0);
@@ -476,7 +539,7 @@ section{position:relative;z-index:1;}
 .spill:hover{border-color:var(--v1);color:var(--v2);background:rgba(139,92,246,.08);}
 
 /* ============================================================
-   DISCOVER MORE WORK
+   DISCOVER MORE WORK — REDESIGNED AUTO-SCROLL + ANIMATIONS
 ============================================================ */
 #discover{
   background:linear-gradient(to bottom,var(--bg),var(--bg2));
@@ -494,87 +557,141 @@ section{position:relative;z-index:1;}
 .disc-scroll-hint svg{animation:scrollHint 1.5s ease-in-out infinite;}
 @keyframes scrollHint{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
 
-.disc-track-wrap{
-  overflow-x:auto;overflow-y:visible;
-  padding:1rem 2rem 2rem;
-  scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(139,92,246,.4) rgba(255,255,255,.04);
-  padding-left:max(2rem, calc((100vw - 1200px)/2 + 2rem));
+/* Auto-scroll carousel */
+.disc-carousel{
+  position:relative;
+  overflow:hidden;
+  padding:1.5rem 0 2.5rem;
+  mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);
 }
-.disc-track-wrap::-webkit-scrollbar{height:4px;}
-.disc-track-wrap::-webkit-scrollbar-track{background:rgba(255,255,255,.03);border-radius:10px;}
-.disc-track-wrap::-webkit-scrollbar-thumb{background:rgba(139,92,246,.4);border-radius:10px;}
-.disc-track{display:flex;gap:1.25rem;width:max-content;}
+.disc-track{
+  display:flex;
+  gap:1.25rem;
+  width:max-content;
+  animation:autoScroll 40s linear infinite;
+}
+.disc-track:hover{animation-play-state:paused;}
+@keyframes autoScroll{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
 
-/* ✅ DCARD — click பண்ணா lightbox */
+/* DCARD */
 .dcard{
-  width:280px;height:280px;
-  border-radius:16px;overflow:hidden;
+  width:290px;height:290px;
+  border-radius:20px;overflow:hidden;
   position:relative;flex-shrink:0;
-  scroll-snap-align:start;
   border:1px solid var(--border);
   background:var(--surface);
   cursor:none;
-  opacity:0;transform:translateY(40px) scale(.94);
-  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s;
+  opacity:0;transform:translateY(50px) scale(.92);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),border-color .35s,box-shadow .35s;
 }
 .dcard.dvis{opacity:1;transform:translateY(0) scale(1);}
-.dcard:nth-child(1){transition-delay:.00s;}
-.dcard:nth-child(2){transition-delay:.08s;}
-.dcard:nth-child(3){transition-delay:.16s;}
-.dcard:nth-child(4){transition-delay:.24s;}
-.dcard:nth-child(5){transition-delay:.32s;}
-.dcard:nth-child(6){transition-delay:.40s;}
-.dcard:nth-child(7){transition-delay:.48s;}
-.dcard:hover{border-color:rgba(139,92,246,.4);box-shadow:0 20px 50px rgba(0,0,0,.6);}
-
-.dcard-img{
-  width:100%;height:100%;object-fit:cover;object-position:center;
-  display:block;transition:transform .6s cubic-bezier(.16,1,.3,1);
+.dcard:hover{
+  border-color:rgba(139,92,246,.5);
+  box-shadow:0 25px 60px rgba(0,0,0,.7),0 0 0 1px rgba(139,92,246,.2);
 }
+
+/* Gradient reveal then image — gradient always shown, image fades on top */
+.dcard-gradient{
+  position:absolute;inset:0;z-index:0;
+  transition:opacity .6s ease;
+}
+.dcard-img{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center;
+  display:block;
+  z-index:1;
+  opacity:0;
+  transition:opacity 1s ease, transform .6s cubic-bezier(.16,1,.3,1);
+}
+.dcard-img.img-loaded{opacity:1;}
 .dcard:hover .dcard-img{transform:scale(1.08);}
 
-.dcard-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:0;}
-.df1{background:linear-gradient(135deg,#0f0826,#2d0e6e,#7c3aed);}
-.df2{background:linear-gradient(135deg,#07111e,#0a3050,#0ea5e9);}
-.df3{background:linear-gradient(135deg,#1e0714,#5a0d3c,#db2777);}
-.df4{background:linear-gradient(135deg,#160d03,#4d2504,#ea580c);}
-.df5{background:linear-gradient(135deg,#040e0a,#083d22,#059669);}
-.df6{background:linear-gradient(135deg,#0d0716,#2e1065,#7e22ce);}
-.df7{background:linear-gradient(135deg,#0f1216,#1e3a5f,#2563eb);}
+/* Unique per-card gradient colors */
+.dg1{background:linear-gradient(135deg,#0f0826,#2d0e6e,#7c3aed,#a855f7);}
+.dg2{background:linear-gradient(135deg,#07111e,#0a3050,#0ea5e9,#38bdf8);}
+.dg3{background:linear-gradient(135deg,#1e0714,#5a0d3c,#db2777,#f472b6);}
+.dg4{background:linear-gradient(135deg,#160d03,#4d2504,#ea580c,#fb923c);}
+.dg5{background:linear-gradient(135deg,#040e0a,#083d22,#059669,#34d399);}
+.dg6{background:linear-gradient(135deg,#0d0716,#2e1065,#7e22ce,#c084fc);}
+.dg7{background:linear-gradient(135deg,#0f1216,#1e3a5f,#2563eb,#60a5fa);}
+
+/* Animated gradient shimmer on cards */
+.dcard-gradient::after{
+  content:'';position:absolute;inset:0;
+  background:inherit;
+  filter:blur(20px);
+  opacity:.4;
+  transform:scale(1.1);
+  animation:gradPulse 4s ease-in-out infinite alternate;
+}
+@keyframes gradPulse{
+  from{opacity:.3;transform:scale(1.05);}
+  to{opacity:.6;transform:scale(1.15);}
+}
+
+/* Geometric pattern overlay on gradient */
+.dcard-pattern{
+  position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.15;
+  background-image:
+    radial-gradient(circle at 20% 20%,rgba(255,255,255,.3) 1px,transparent 1px),
+    radial-gradient(circle at 80% 80%,rgba(255,255,255,.2) 1px,transparent 1px);
+  background-size:30px 30px,20px 20px;
+}
+
+/* Line art decoration */
+.dcard-lines{
+  position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;
+}
+.dcard-lines::before{
+  content:'';position:absolute;
+  top:-40%;left:-40%;right:-40%;bottom:-40%;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:50%;
+  animation:rotateLine 15s linear infinite;
+}
+.dcard-lines::after{
+  content:'';position:absolute;
+  top:-20%;left:-20%;right:-20%;bottom:-20%;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:50%;
+  animation:rotateLine 10s linear infinite reverse;
+}
+@keyframes rotateLine{to{transform:rotate(360deg)}}
 
 .dcard-overlay{
-  position:absolute;inset:0;z-index:2;
-  background:linear-gradient(to top,rgba(6,6,18,.9) 0%,rgba(6,6,18,.2) 50%,transparent 100%);
-  padding:1.2rem;display:flex;flex-direction:column;justify-content:flex-end;
+  position:absolute;inset:0;z-index:4;
+  background:linear-gradient(to top,rgba(6,6,18,.95) 0%,rgba(6,6,18,.4) 50%,transparent 100%);
+  padding:1.3rem;display:flex;flex-direction:column;justify-content:flex-end;
   opacity:0;transition:opacity .35s;
 }
 .dcard:hover .dcard-overlay{opacity:1;}
-.dc-label{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:.08em;color:#fff;margin-bottom:.3rem;}
+.dc-label{font-family:'Bebas Neue',sans-serif;font-size:1.25rem;letter-spacing:.08em;color:#fff;margin-bottom:.3rem;}
 .dc-sub{font-family:'DM Mono',monospace;font-size:.6rem;color:rgba(255,255,255,.55);letter-spacing:.1em;text-transform:uppercase;}
 .dc-badge{
-  position:absolute;top:.85rem;left:.85rem;z-index:3;
-  background:rgba(6,6,18,.75);backdrop-filter:blur(12px);
+  position:absolute;top:.9rem;left:.9rem;z-index:5;
+  background:rgba(6,6,18,.8);backdrop-filter:blur(12px);
   border:1px solid var(--border2);border-radius:4px;
-  padding:.2rem .55rem;
+  padding:.22rem .6rem;
   font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.1em;color:var(--v2);
 }
 
-/* ✅ Click hint badge */
+/* Click hint */
 .dc-click-hint{
-  position:absolute;bottom:.85rem;right:.85rem;z-index:3;
+  position:absolute;bottom:.9rem;right:.9rem;z-index:5;
   background:rgba(139,92,246,.25);backdrop-filter:blur(12px);
   border:1px solid rgba(139,92,246,.4);border-radius:4px;
-  padding:.2rem .55rem;
+  padding:.22rem .6rem;
   font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:var(--v2);
   opacity:0;transition:opacity .3s;
 }
 .dcard:hover .dc-click-hint{opacity:1;}
 
 /* ============================================================
-   ✅ LIGHTBOX
+   LIGHTBOX
 ============================================================ */
 .lightbox{
   display:none;position:fixed;inset:0;z-index:9999;
@@ -611,6 +728,7 @@ section{position:relative;z-index:1;}
   position:relative;border-radius:16px;overflow:hidden;
   border:1px solid rgba(255,255,255,.1);
   box-shadow:0 40px 100px rgba(0,0,0,.8);
+  min-width:300px;min-height:200px;
 }
 #lbImg{
   max-width:80vw;max-height:72vh;
@@ -618,24 +736,11 @@ section{position:relative;z-index:1;}
   transition:opacity .3s;
 }
 .lb-info{text-align:center;}
-.lb-label{
-  font-family:'Bebas Neue',sans-serif;font-size:1.6rem;
-  letter-spacing:.1em;color:#fff;margin-bottom:.3rem;
-}
-.lb-sub{
-  font-family:'DM Mono',monospace;font-size:.65rem;
-  color:rgba(255,255,255,.45);letter-spacing:.12em;text-transform:uppercase;
-}
-.lb-dots{
-  display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;
-}
-.lb-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,.2);transition:background .3s,transform .3s;cursor:none;
-}
+.lb-label{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:.1em;color:#fff;margin-bottom:.3rem;}
+.lb-sub{font-family:'DM Mono',monospace;font-size:.65rem;color:rgba(255,255,255,.45);letter-spacing:.12em;text-transform:uppercase;}
+.lb-dots{display:flex;gap:.5rem;justify-content:center;margin-top:.5rem;}
+.lb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s,transform .3s;cursor:none;}
 .lb-dot.active{background:var(--v2);transform:scale(1.4);}
-
-/* ✅ Fallback shown in lightbox when no image */
 .lb-fallback{
   width:500px;height:320px;border-radius:16px;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;
@@ -681,19 +786,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
   .about-grid{grid-template-columns:1fr;gap:3rem;}
   .about-vis{height:320px;}
   .pgrid{grid-template-columns:1fr;}
-  .tools-wrapper{display:none;}
+  .tools-orbital{display:none;}
   .tools-grid-m{display:grid;}
   footer{flex-direction:column;align-items:center;text-align:center;padding:2rem;}
   .flinks{justify-content:center;flex-wrap:wrap;gap:1rem;}
-  .disc-track-wrap{padding-left:1.5rem;}
-  .discover-head{padding:0 1.5rem 2rem;}
   .dcard{width:240px;height:240px;}
   .lb-arrow{display:none;}
   #lbImg{max-width:92vw;}
 }
 @media(max-width:600px){
   .wheel-grid{grid-template-columns:repeat(2,1fr);}
-  .tools-grid-m{grid-template-columns:repeat(3,1fr);}
+  .tools-grid-m{grid-template-columns:repeat(2,1fr);}
   .dcard{width:200px;height:200px;}
   .pgrid{grid-template-columns:1fr;}
   .pthumb{height:220px;}
@@ -726,13 +829,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
 
 <!-- ====== NAV ====== -->
 <nav id="mainNav">
-  <div class="nav-logo">py.</div>
+  <div class="nav-logo">paviyachini.k.</div>
   <ul class="nav-links">
     <li><a href="#home">Home</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Resume</button>
+  <!-- ✅ Resume button — update href to your actual resume PDF link -->
+  <a class="nav-cta" href="PAVIYACHINI_K_FlowCV_Resume_2026-04-26.pdf" target="_blank" rel="noopener">Resume</a>
 </nav>
 
 <!-- ====== HERO ====== -->
@@ -819,20 +923,31 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
   </div>
 </section>
 
-<!-- ====== TOOLS ====== -->
+<!-- ====== TOOLS — REDESIGNED ====== -->
 <section id="tools">
-  <div class="si">
-    <div class="slabel rv up">Toolbox</div>
-    <h2 class="stitle rv up d2" style="text-align:center;">My Design <span class="grad-text">Toolbox</span></h2>
-    <p class="rv up d3" style="text-align:center;color:var(--muted);max-width:480px;margin:0 auto;font-size:.88rem;line-height:1.8;">12+ tools mastered across design, research, and prototyping.</p>
-    <div class="tools-wrapper" id="toolsWrapper">
-      <div class="tools-canvas" id="toolsCanvas">
-        <svg id="connSvg"></svg>
-        <div class="hub"><div class="hub-pulse"></div><div class="hub-label">Tools</div><div class="hub-val">12+</div></div>
-      </div>
-    </div>
-    <div class="tools-grid-m" id="toolsGridM"></div>
+  <div class="tools-header rv up">
+    <div class="slabel">Toolbox</div>
+    <h2 class="stitle">My Design <span class="grad-text">Toolbox</span></h2>
+    <p style="color:var(--muted);max-width:480px;margin:0 auto;font-size:.88rem;line-height:1.8;">6 tools mastered across design, research, and prototyping.</p>
   </div>
+
+  <!-- Desktop: orbital layout -->
+  <div class="tools-orbital" id="toolsOrbital">
+    <svg id="orb-svg"></svg>
+    <!-- Decorative rings -->
+    <div class="orb-ring" style="width:320px;height:320px;"></div>
+    <div class="orb-ring" style="width:520px;height:520px;"></div>
+    <!-- Hub -->
+    <div class="orb-hub">
+      <div class="orb-hub-pulse"></div>
+      <div class="hub-label">Tools</div>
+      <div class="hub-val">6+</div>
+    </div>
+    <!-- Tool nodes injected by JS -->
+  </div>
+
+  <!-- Mobile: grid -->
+  <div class="tools-grid-m" id="toolsGridM"></div>
 </section>
 
 <!-- ====== PROJECTS ====== -->
@@ -846,23 +961,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
       <div class="pc" data-pd="0">
         <div class="p-num">01</div>
         <div class="pthumb">
-          <img class="pcover" src="Screenshot 2026-04-24 112240.png" alt="Nova SaaS Dashboard"
-            style="object-position:center top;"
-            onerror="this.style.display='none';">
+          <img class="pcover" src="Case study.png" alt="Case Study" style="object-position:center top;" onerror="this.style.display='none';">
           <div class="pthumb-fallback ga-fb">
-            <div style="opacity:.3">
-              <svg width="80" height="60" viewBox="0 0 80 60" fill="none"><rect x="4" y="4" width="72" height="52" rx="6" stroke="white" stroke-width="1.5"/><rect x="12" y="14" width="24" height="16" rx="3" fill="rgba(139,92,246,.5)"/><rect x="44" y="14" width="22" height="7" rx="2" fill="rgba(255,255,255,.25)"/><rect x="44" y="24" width="14" height="6" rx="2" fill="rgba(255,255,255,.15)"/><rect x="12" y="36" width="54" height="4" rx="2" fill="rgba(255,255,255,.15)"/><rect x="12" y="44" width="36" height="4" rx="2" fill="rgba(255,255,255,.1)"/></svg>
-            </div>
+            <div style="opacity:.3"><svg width="80" height="60" viewBox="0 0 80 60" fill="none"><rect x="4" y="4" width="72" height="52" rx="6" stroke="white" stroke-width="1.5"/><rect x="12" y="14" width="24" height="16" rx="3" fill="rgba(139,92,246,.5)"/><rect x="44" y="14" width="22" height="7" rx="2" fill="rgba(255,255,255,.25)"/><rect x="44" y="24" width="14" height="6" rx="2" fill="rgba(255,255,255,.15)"/><rect x="12" y="36" width="54" height="4" rx="2" fill="rgba(255,255,255,.15)"/><rect x="12" y="44" width="36" height="4" rx="2" fill="rgba(255,255,255,.1)"/></svg></div>
           </div>
-          <a class="pthumb-link" href="Screenshot 2026-04-24 112240.png" target="_blank">
-            <span class="pthumb-link-txt">View Project →</span>
-          </a>
+          <a class="pthumb-link" href="https://www.behance.net/gallery/248163195/FLORIVA" target="_blank"><span class="pthumb-link-txt">View Project →</span></a>
         </div>
         <div class="pinfo">
-          <h3>Nova SaaS Dashboard</h3>
-          <p>Full product redesign that improved task completion by 40%. End-to-end UX from research to hi-fi.</p>
-          <div class="ptags"><span class="ptag">Dashboard</span><span class="ptag">UX Research</span><span class="ptag">Figma</span></div>
-          <a class="pview-link" href="https://www.behance.net/gallery/248163195/FLORIVA" target="_blank">View Case Study <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <h3>Case Study</h3>
+          <p>A modern flower delivery app designed to create emotional connections through elegant bouquet selections and smooth user experience.</p>
+          <div class="ptags"><span class="ptag">Photoshop</span><span class="ptag">Figma</span></div>
+          <a class="pview-link" href="https://www.behance.net/gallery/248163195/FLORIVA" target="_blank">View Project <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -870,23 +979,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
       <div class="pc" data-pd="100">
         <div class="p-num">02</div>
         <div class="pthumb">
-          <img class="pcover" src="project2.jpg" alt="Fintrack App"
-            style="object-position:center center;"
-            onerror="this.style.display='none';">
+          <img class="pcover" src="Car website.png" alt="Website Design" style="object-position:center center;" onerror="this.style.display='none';">
           <div class="pthumb-fallback gb-fb">
-            <div style="opacity:.3">
-              <svg width="50" height="80" viewBox="0 0 50 80" fill="none"><rect x="4" y="4" width="42" height="72" rx="8" stroke="white" stroke-width="1.5"/><rect x="14" y="16" width="22" height="10" rx="3" fill="rgba(6,182,212,.5)"/><rect x="10" y="34" width="30" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="10" y="43" width="22" height="5" rx="2" fill="rgba(255,255,255,.13)"/><circle cx="25" cy="62" r="5" fill="rgba(6,182,212,.4)"/></svg>
-            </div>
+            <div style="opacity:.3"><svg width="50" height="80" viewBox="0 0 50 80" fill="none"><rect x="4" y="4" width="42" height="72" rx="8" stroke="white" stroke-width="1.5"/><rect x="14" y="16" width="22" height="10" rx="3" fill="rgba(6,182,212,.5)"/><rect x="10" y="34" width="30" height="5" rx="2" fill="rgba(255,255,255,.2)"/><rect x="10" y="43" width="22" height="5" rx="2" fill="rgba(255,255,255,.13)"/><circle cx="25" cy="62" r="5" fill="rgba(6,182,212,.4)"/></svg></div>
           </div>
-          <a class="pthumb-link" href="project-fintrack.html" target="_blank">
-            <span class="pthumb-link-txt">View Project →</span>
-          </a>
+          <a class="pthumb-link" href="https://www.behance.net/gallery/235400293/Car-Website" target="_blank"><span class="pthumb-link-txt">View Project →</span></a>
         </div>
         <div class="pinfo">
-          <h3>Fintrack App</h3>
-          <p>Finance mobile app with AI-powered insights and minimal UI. Designed for iOS and Android.</p>
-          <div class="ptags"><span class="ptag">App Design</span><span class="ptag">iOS</span><span class="ptag">Android</span></div>
-          <a class="pview-link" href="project-fintrack.html" target="_blank">View Case Study <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <h3>Website Design</h3>
+          <p>Clean and structured website UI in Photoshop — focused on layout, alignment, typography, and visual hierarchy.</p>
+          <div class="ptags"><span class="ptag">Photoshop</span></div>
+          <a class="pview-link" href="https://www.behance.net/gallery/235400293/Car-Website" target="_blank">View Project <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -894,21 +997,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
       <div class="pc" data-pd="150">
         <div class="p-num">03</div>
         <div class="pthumb">
-          <img class="pcover" src="project3.jpg" alt="Bloom E-Commerce" onerror="this.style.display='none';">
+          <img class="pcover" src="monogram image.png" alt="WEBSITE RECREATED" onerror="this.style.display='none';">
           <div class="pthumb-fallback gc-fb">
-            <div style="opacity:.3">
-              <svg width="80" height="60" viewBox="0 0 80 60" fill="none"><rect x="4" y="4" width="72" height="52" rx="6" stroke="white" stroke-width="1.5"/><rect x="12" y="12" width="18" height="22" rx="3" fill="rgba(236,72,153,.4)"/><rect x="34" y="12" width="18" height="22" rx="3" fill="rgba(236,72,153,.3)"/><rect x="56" y="12" width="14" height="22" rx="3" fill="rgba(236,72,153,.2)"/><rect x="12" y="40" width="54" height="4" rx="2" fill="rgba(255,255,255,.15)"/></svg>
-            </div>
+            <div style="opacity:.3"><svg width="80" height="60" viewBox="0 0 80 60" fill="none"><rect x="4" y="4" width="72" height="52" rx="6" stroke="white" stroke-width="1.5"/><rect x="12" y="12" width="18" height="22" rx="3" fill="rgba(236,72,153,.4)"/><rect x="34" y="12" width="18" height="22" rx="3" fill="rgba(236,72,153,.3)"/><rect x="56" y="12" width="14" height="22" rx="3" fill="rgba(236,72,153,.2)"/><rect x="12" y="40" width="54" height="4" rx="2" fill="rgba(255,255,255,.15)"/></svg></div>
           </div>
-          <a class="pthumb-link" href="project-bloom.html" target="_blank">
-            <span class="pthumb-link-txt">View Project →</span>
-          </a>
+          <a class="pthumb-link" href="monogram.html" target="_blank"><span class="pthumb-link-txt">View Project →</span></a>
         </div>
         <div class="pinfo">
-          <h3>Bloom E-Commerce</h3>
-          <p>Brand identity and full e-commerce UX redesign. From IA to visual language and responsive layouts.</p>
-          <div class="ptags"><span class="ptag">Web</span><span class="ptag">Branding</span><span class="ptag">E-Commerce</span></div>
-          <a class="pview-link" href="project-bloom.html" target="_blank">View Case Study <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <h3>Website Recreated</h3>
+          <p>Recreated the Monogram website in HTML, CSS & Bootstrap — replicating layout, responsiveness, and clean code.</p>
+          <div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span></div>
+          <a class="pview-link" href="monogram.html" target="_blank">View Project <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -916,21 +1015,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
       <div class="pc" data-pd="200">
         <div class="p-num">04</div>
         <div class="pthumb">
-          <img class="pcover" src="project4.jpg" alt="Orbit Design System" onerror="this.style.display='none';">
+          <img class="pcover" src="aboton.img.png" alt="Website Recreated" onerror="this.style.display='none';">
           <div class="pthumb-fallback gd-fb">
-            <div style="opacity:.3">
-              <svg width="80" height="60" viewBox="0 0 80 60" fill="none"><circle cx="40" cy="30" r="20" stroke="white" stroke-width="1.5"/><circle cx="40" cy="30" r="12" stroke="rgba(249,115,22,.6)" stroke-width="1.5"/><circle cx="40" cy="30" r="4" fill="rgba(249,115,22,.6)"/><line x1="55" y1="15" x2="65" y2="8" stroke="rgba(255,255,255,.3)" stroke-width="1"/><line x1="25" y1="15" x2="15" y2="8" stroke="rgba(255,255,255,.3)" stroke-width="1"/></svg>
-            </div>
+            <div style="opacity:.3"><svg width="80" height="60" viewBox="0 0 80 60" fill="none"><circle cx="40" cy="30" r="20" stroke="white" stroke-width="1.5"/><circle cx="40" cy="30" r="12" stroke="rgba(249,115,22,.6)" stroke-width="1.5"/><circle cx="40" cy="30" r="4" fill="rgba(249,115,22,.6)"/></svg></div>
           </div>
-          <a class="pthumb-link" href="project-orbit.html" target="_blank">
-            <span class="pthumb-link-txt">View Project →</span>
-          </a>
+          <a class="pthumb-link" href="Aboton .html" target="_blank"><span class="pthumb-link-txt">View Project →</span></a>
         </div>
         <div class="pinfo">
-          <h3>Orbit Design System</h3>
-          <p>Scalable component library for a startup product team. Tokens, patterns, and documentation.</p>
-          <div class="ptags"><span class="ptag">Design System</span><span class="ptag">Tokens</span><span class="ptag">Figma</span></div>
-          <a class="pview-link" href="project-orbit.html" target="_blank">View Case Study <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <h3>Website Recreated</h3>
+          <p>Recreated the Ableton website using HTML & CSS — focused on layout, responsiveness, and matching visual style.</p>
+          <div class="ptags"><span class="ptag">HTML</span><span class="ptag">CSS</span></div>
+          <a class="pview-link" href="Aboton .html" target="_blank">View Project <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
       </div>
 
@@ -981,68 +1076,118 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
       <h2 class="stitle">Discover <span class="grad-text">More Work</span></h2>
     </div>
     <div class="disc-scroll-hint">
-      Scroll to explore
+      Auto scrolling
       <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </div>
   </div>
 
-  <div class="disc-track-wrap" id="discTrackWrap">
+  <div class="disc-carousel">
     <div class="disc-track" id="discTrack">
+      <!-- Cards duplicated for seamless loop — JS will clone them -->
 
-      <div class="dcard" data-label="Lumina Branding" data-sub="Logo · Identity · Guidelines">
-        <div class="dc-badge">Branding</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="3b068129-ff15-44ca-91dd-0ab770d22892.jpg" alt="Lumina Branding" onerror="this.style.display='none';">
-        <div class="dcard-fallback df1"></div>
-        <div class="dcard-overlay"><div class="dc-label">Lumina Branding</div><div class="dc-sub">Logo · Identity · Guidelines</div></div>
+      <div class="dcard" data-label="Orange Juice" data-sub="">
+        <div class="dcard-gradient dg1"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="84eb922b-a04e-488e-8181-921a5fef3ebb.jpg" alt="Orange Juice">
       </div>
 
-      <div class="dcard" data-label="Roam Travel App" data-sub="iOS · UX · Interaction">
-        <div class="dc-badge">Mobile</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work2.jpg" alt="Roam Travel App" onerror="this.style.display='none';">
-        <div class="dcard-fallback df2"></div>
-        <div class="dcard-overlay"><div class="dc-label">Roam Travel App</div><div class="dc-sub">iOS · UX · Interaction</div></div>
+      <div class="dcard" data-label="Nescafe" data-sub="">
+        <div class="dcard-gradient dg2"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="bc7892ac-1db8-4ac0-97c8-578b4f03b3d7.jpg" alt="Nescafe">
       </div>
 
-      <div class="dcard" data-label="Pulse Agency Site" data-sub="Webflow · Motion · UI">
-        <div class="dc-badge">Web</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work3.jpg" alt="Pulse Agency Site" onerror="this.style.display='none';">
-        <div class="dcard-fallback df3"></div>
-        <div class="dcard-overlay"><div class="dc-label">Pulse Agency Site</div><div class="dc-sub">Webflow · Motion · UI</div></div>
+      <div class="dcard" data-label="Sprite" data-sub="">
+        <div class="dcard-gradient dg3"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="e871cd71-1902-409f-9bf5-686b87dbea33.jpg" alt="Sprite">
       </div>
 
-      <div class="dcard" data-label="Apex Analytics" data-sub="Data Viz · SaaS · UX">
-        <div class="dc-badge">Dashboard</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work4.jpg" alt="Apex Analytics" onerror="this.style.display='none';">
-        <div class="dcard-fallback df4"></div>
-        <div class="dcard-overlay"><div class="dc-label">Apex Analytics</div><div class="dc-sub">Data Viz · SaaS · UX</div></div>
+      <div class="dcard" data-label="Lays" data-sub="">
+        <div class="dcard-gradient dg4"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="c6551ad3-e87f-4f83-9f62-e60b04474118.jpg" alt="Lays">
       </div>
 
-      <div class="dcard" data-label="Zen Wellness App" data-sub="Mobile · A11y · Research">
-        <div class="dc-badge">Health</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work5.jpg" alt="Zen Wellness App" onerror="this.style.display='none';">
-        <div class="dcard-fallback df5"></div>
-        <div class="dcard-overlay"><div class="dc-label">Zen Wellness App</div><div class="dc-sub">Mobile · A11y · Research</div></div>
+      <div class="dcard" data-label="Slice" data-sub="">
+        <div class="dcard-gradient dg5"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="3b068129-ff15-44ca-91dd-0ab770d22892.jpg" alt="slice">
       </div>
 
-      <div class="dcard" data-label="Aura Fashion" data-sub="Shopify · Branding · UX">
-        <div class="dc-badge">E-Comm</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work6.jpg" alt="Aura Fashion" onerror="this.style.display='none';">
-        <div class="dcard-fallback df6"></div>
-        <div class="dcard-overlay"><div class="dc-label">Aura Fashion</div><div class="dc-sub">Shopify · Branding · UX</div></div>
+      <div class="dcard" data-label="Lays Advertisement" data-sub="">
+        <div class="dcard-gradient dg6"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="376fb3a9-d689-43e9-abd3-5ee668056080.jpg" alt="Lays Advertisement">
       </div>
 
-      <div class="dcard" data-label="Learnify Platform" data-sub="Web · Gamification · UI">
-        <div class="dc-badge">EdTech</div>
-        <div class="dc-click-hint">Click to view</div>
-        <img class="dcard-img" src="work7.jpg" alt="Learnify Platform" onerror="this.style.display='none';">
-        <div class="dcard-fallback df7"></div>
-        <div class="dcard-overlay"><div class="dc-label">Learnify Platform</div><div class="dc-sub">Web · Gamification · UI</div></div>
+      <div class="dcard" data-label="CocaCola Poster" data-sub="">
+        <div class="dcard-gradient dg7"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="b315d879-f68a-4df6-8205-0c940776c1f2.jpg" alt="CocaCola Poster">
+      </div>
+
+      <div class="dcard" data-label="Poster Recreated" data-sub="">
+        <div class="dcard-gradient dg8"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="cee94867-5f7c-4547-9e8b-cf3327206f16.jpg" alt="Poster Recreated">
+      </div>
+
+      <div class="dcard" data-label="Poster Recreated" data-sub="">
+        <div class="dcard-gradient dg9"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="cb6461d1-3d79-4622-acc4-90c5b6f26d2e.jpg" alt="Poster Recreated">
+      </div>
+      
+        <div class="dcard" data-label="Poster Recreated" data-sub="">
+        <div class="dcard-gradient dg10"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="8a99c644-48ba-455b-a5bb-ebf8770e1564.jpg" alt="Poster Recreated">
+      </div>
+
+       <div class="dcard" data-label="Poster Recreated" data-sub="">
+        <div class="dcard-gradient dg11"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="516aaa69-8d33-42c2-8fba-b4f45ef6e6a0.jpg" alt="Poster Recreated">
+      </div>
+
+       <div class="dcard" data-label="Poster Recreated" data-sub="">
+        <div class="dcard-gradient dg12"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="f665f927-5b62-4fcd-bb89-ffc9db536f07.jpg" alt="Poster Recreated">
+      </div>
+      
+      <div class="dcard" data-label="textContent Poster" data-sub="">
+        <div class="dcard-gradient dg13"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="49cb1306-bbe0-49b7-974b-7fd653f33ada.jpg" alt="textContent Poster">
+      </div>
+
+      <div class="dcard" data-label="textContent Poster" data-sub="">
+        <div class="dcard-gradient dg14"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="a1bd36e1-c56d-4628-bae1-1fdff299bf2c.jpg" alt="textContent Poster">
+      </div>
+
+      <div class="dcard" data-label="textContent Poster" data-sub="">
+        <div class="dcard-gradient dg15"></div>
+        <div class="dcard-pattern"></div>
+        <div class="dcard-lines"></div>
+        <img class="dcard-img" src="4573506a-c8f3-45ac-84e5-640f4d96e3d5.jpg" alt="textContent Poster">
       </div>
 
     </div>
@@ -1056,9 +1201,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
     <h2 class="cnt-big rv up d1">Let's <span class="grad-text">Connect</span><br><span class="outline-text">There</span></h2>
     <p class="cnt-sub rv up d2">Have a project in mind? Let's build something extraordinary together.</p>
     <div class="cnt-btns rv up d3">
-      <a href="mailto:heythereapu@gmail.com" class="btn-p">Send a Message →</a>
-      <a href="#" class="btn-g">View Behance</a>
-      <a href="#" class="btn-g">LinkedIn</a>
+      <a href="https://www.behance.net/paviyaskarpana" class="btn-g" target="_blank">View Behance</a>
+      <a href="https://www.linkedin.com/in/paviyashini-karpanaiselvam-12293135b/" class="btn-g" target="_blank">LinkedIn</a>
     </div>
   </div>
 </section>
@@ -1073,9 +1217,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 4rem
     <li><a href="#discover">More Work</a></li>
   </ul>
   <div class="fsoc">
-    <a class="sbtn" href="#">BE</a>
-    <a class="sbtn" href="#">LN</a>
-    <a class="sbtn" href="#">EM</a>
+    <a class="sbtn" href="https://www.behance.net/paviyaskarpana" target="_blank">BE</a>
+    <a class="sbtn" href="https://www.linkedin.com/in/paviyashini-karpanaiselvam-12293135b/" target="_blank">LN</a>
+    <a class="sbtn" href="mailtopaviyashinikarpanaiselvam@email.com">EM</a>
   </div>
   <p class="fcopy">© 2026 Paviyachini — All rights reserved.</p>
 </footer>
@@ -1170,7 +1314,7 @@ barData.forEach(d=>{
 document.querySelectorAll('.lbar-item.rv').forEach(el=>rvObs.observe(el));
 
 /* ─── SKILLS: TAG CLOUD ─── */
-const tags=['Figma','Adobe Photoshop','Framer','Visual Studio','Miro','UX Research','Canva','Accessibility','UI Design','Data Viz','Branding','User Testing'];
+const tags=['Figma','Adobe Photoshop','Visual Studio','Adobe lllustrator','Canva',"HTML","CSS","Java Scipt"];
 const tc=document.getElementById('tagCloud');
 tags.forEach((t,i)=>{
   const p=document.createElement('span');
@@ -1194,55 +1338,135 @@ const skillObs=new IntersectionObserver(es=>{es.forEach(e=>{
 });},{threshold:.12});
 if(wg)skillObs.observe(wg);
 
-/* ─── TOOLS ORBIT ─── */
+/* ─── TOOLS — BRAND ICON CARDS ─── */
+// Each tool gets a rich branded card rendered as HTML inside tn-box
 const toolsData=[
-  {icon:'🎨',name:'Figma'},{icon:'🖼️',name:'Adobe Photoshop'},
-  {icon:'<svg width="20" height="20" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M70.9 5.1L37.3 36.6 15.5 19.7 5 25.9v48.2l10.5 6.2 21.8-16.9 33.6 31.5 19.1-9.1V14.2L70.9 5.1z" fill="#007ACC"/><path d="M70.9 74.3L44.2 50l26.7-24.3v48.6z" fill="#fff"/><path d="M15.5 63.7L37.3 50 15.5 36.3v27.4z" fill="#fff"/></svg>',name:'Visual Studio'},
-  {icon:'💻',name:'Website'},
-  {icon:'🖥️',name:'UI Design'},{icon:'🔬',name:'UX Research'},
-  {icon:'🎭',name:'Canva'},{icon:'🎯',name:'Branding'},
-  {icon:'📊',name:'Dashboard'},{icon:'🧩',name:'Design System.'},
-  {icon:'📐',name:'Miro'},{icon:'⚡',name:'Framer'},
+  {
+    name:'Figma',
+    svg:`<div style="width:100%;height:100%;background:#1e1e2e;display:flex;align-items:center;justify-content:center;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 65% 25%,rgba(26,188,254,.2),transparent 55%),radial-gradient(circle at 30% 75%,rgba(162,89,255,.18),transparent 55%);"></div>
+      <svg width="38" height="58" viewBox="0 0 38 57" fill="none" style="position:relative;z-index:1;">
+        <path d="M19 28.5C19 25.298 21.589 22.75 24.846 22.75C28.103 22.75 30.692 25.298 30.692 28.5C30.692 31.702 28.103 34.25 24.846 34.25C21.589 34.25 19 31.702 19 28.5Z" fill="#1ABCFE"/>
+        <path d="M7.308 45.125C7.308 41.923 9.897 39.375 13.154 39.375H19V45.125C19 48.327 16.411 50.875 13.154 50.875C9.897 50.875 7.308 48.327 7.308 45.125Z" fill="#0ACF83"/>
+        <path d="M19 6.125V17.625H24.846C28.103 17.625 30.692 15.077 30.692 11.875C30.692 8.673 28.103 6.125 24.846 6.125H19Z" fill="#FF7262"/>
+        <path d="M7.308 11.875C7.308 15.077 9.897 17.625 13.154 17.625H19V6.125H13.154C9.897 6.125 7.308 8.673 7.308 11.875Z" fill="#F24E1E"/>
+        <path d="M7.308 28.5C7.308 31.702 9.897 34.25 13.154 34.25H19V22.75H13.154C9.897 22.75 7.308 25.298 7.308 28.5Z" fill="#A259FF"/>
+      </svg>
+    </div>`
+  },
+  {
+    name:'Photoshop',
+    svg:`<div style="width:100%;height:100%;background:#001e36;display:flex;align-items:center;justify-content:center;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(49,168,255,.18),transparent 65%);"></div>
+      <span style="font-family:Arial Black,Arial;font-weight:900;font-size:30px;color:#31A8FF;position:relative;z-index:1;letter-spacing:-1px;">Ps</span>
+    </div>`
+  },
+  {
+    name:'Illustrator',
+    svg:`<div style="width:100%;height:100%;background:#310000;display:flex;align-items:center;justify-content:center;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,rgba(255,154,0,.18),transparent 65%);"></div>
+      <span style="font-family:Arial Black,Arial;font-weight:900;font-size:30px;color:#FF9A00;position:relative;z-index:1;letter-spacing:-1px;">Ai</span>
+    </div>`
+  },
+  {
+    name:'Canva',
+    svg:`<div style="width:100%;height:100%;background:linear-gradient(145deg,#7d2ae8,#9b59b6);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.18),transparent 55%);"></div>
+      <svg width="38" height="38" viewBox="0 0 60 60" fill="none" style="position:relative;z-index:1;">
+        <circle cx="30" cy="30" r="22" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+        <text x="13" y="40" font-family="Arial Black,Arial" font-weight="900" font-size="26" fill="white">C</text>
+      </svg>
+      <span style="position:relative;z-index:1;font-family:Arial;font-size:8px;font-weight:700;color:rgba(255,255,255,0.75);letter-spacing:2px;margin-top:2px;">CANVA</span>
+    </div>`
+  },
+  {
+    name:'UI Design',
+    svg:`<div style="width:100%;height:100%;background:linear-gradient(145deg,#1a0535,#3b1275);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 60% 30%,rgba(139,92,246,.4),transparent 60%),radial-gradient(circle at 30% 80%,rgba(236,72,153,.2),transparent 60%);"></div>
+      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" style="position:relative;z-index:1;">
+        <rect x="2" y="2" width="30" height="20" rx="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
+        <rect x="5" y="5" width="11" height="8" rx="2" fill="rgba(167,139,250,0.85)"/>
+        <rect x="18" y="5" width="9" height="3.5" rx="1" fill="rgba(255,255,255,0.4)"/>
+        <rect x="18" y="10" width="6" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="5" y="15" width="22" height="3" rx="1" fill="rgba(255,255,255,0.2)"/>
+        <rect x="5" y="26" width="24" height="5" rx="2" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+        <rect x="10" y="27.5" width="14" height="1.5" rx=".75" fill="rgba(167,139,250,0.6)"/>
+      </svg>
+      <span style="font-family:Arial;font-size:8px;font-weight:700;color:rgba(255,255,255,0.6);letter-spacing:2px;position:relative;z-index:1;">UI</span>
+    </div>`
+  },
+  {
+    name:'UX Research',
+    svg:`<div style="width:100%;height:100%;background:linear-gradient(145deg,#021825,#063a52);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:inherit;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,rgba(6,182,212,.28),transparent 65%);"></div>
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" style="position:relative;z-index:1;">
+        <circle cx="16" cy="16" r="10" fill="none" stroke="rgba(6,182,212,0.85)" stroke-width="2.2"/>
+        <circle cx="16" cy="16" r="5" fill="rgba(6,182,212,0.25)"/>
+        <circle cx="16" cy="16" r="1.8" fill="rgba(6,182,212,0.95)"/>
+        <line x1="23.5" y1="23.5" x2="34" y2="34" stroke="rgba(6,182,212,0.75)" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <span style="font-family:Arial;font-size:8px;font-weight:700;color:rgba(6,182,212,0.7);letter-spacing:2px;position:relative;z-index:1;">UX</span>
+    </div>`
+  },
 ];
-const canvas=document.getElementById('toolsCanvas');
-const svg=document.getElementById('connSvg');
-const mGrid=document.getElementById('toolsGridM');
-toolsData.forEach(d=>{mGrid.innerHTML+=`<div class="tgm"><div class="ti">${d.icon}</div><div class="tn">${d.name}</div></div>`;});
 
+/* Build mobile grid */
+const mGrid=document.getElementById('toolsGridM');
+toolsData.forEach(d=>{
+  mGrid.innerHTML+=`<div class="tgm"><div class="ti">${d.svg}</div><div class="tn">${d.name}</div></div>`;
+});
+
+/* Build orbital on desktop */
 function buildOrbit(){
-  const W=canvas.offsetWidth,H=580;
+  const orbital=document.getElementById('toolsOrbital');
+  const W=orbital.offsetWidth,H=orbital.offsetHeight;
   const cx=W/2,cy=H/2;
-  const rings=[{r:170,count:6},{r:300,count:6}];
+  const svg=document.getElementById('orb-svg');
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  svg.innerHTML='';
+
+  // Defs for gradient lines
+  const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  defs.innerHTML=`<linearGradient id="lg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.6"/><stop offset="100%" stop-color="#EC4899" stop-opacity="0.1"/></linearGradient>
+  <linearGradient id="lg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.1"/></linearGradient>`;
+  svg.appendChild(defs);
+
+  // 2 rings: inner 3 nodes, outer 3 nodes
+  const rings=[{r:W*0.26,count:3},{r:W*0.42,count:3}];
   let idx=0;
-  rings.forEach(ring=>{
+  rings.forEach((ring,ri)=>{
     for(let i=0;i<ring.count;i++){
       if(idx>=toolsData.length)break;
-      const angle=(i/ring.count)*2*Math.PI-Math.PI/2;
+      const angle=(i/ring.count)*2*Math.PI + (ri===0?Math.PI/6:0);
       const nx=cx+ring.r*Math.cos(angle);
       const ny=cy+ring.r*Math.sin(angle);
+
+      // Connection line
       const line=document.createElementNS('http://www.w3.org/2000/svg','line');
       line.setAttribute('x1',cx);line.setAttribute('y1',cy);
       line.setAttribute('x2',nx);line.setAttribute('y2',ny);
-      line.setAttribute('stroke','rgba(139,92,246,.18)');
-      line.setAttribute('stroke-width','1');
-      line.setAttribute('stroke-dasharray','4 4');
+      line.setAttribute('stroke',`url(#lg${ri+1})`);
+      line.setAttribute('stroke-width','1.5');
+      line.setAttribute('stroke-dasharray','5 4');
       svg.appendChild(line);
+
+      // Tool node
       const node=document.createElement('div');
       node.className='tool-node';
-      node.style.left=nx+'px';node.style.top=ny+'px';
-      node.innerHTML=`<div class="tn-box">${toolsData[idx].icon}</div><div class="tn-label">${toolsData[idx].name}</div>`;
-      canvas.appendChild(node);
+      node.style.left=nx+'px';
+      node.style.top=ny+'px';
+      node.innerHTML=`<div class="tn-box">${toolsData[idx].svg}</div><div class="tn-label">${toolsData[idx].name}</div>`;
+      orbital.appendChild(node);
       idx++;
     }
   });
+
+  // Animate in
   const tObs=new IntersectionObserver(es=>{es.forEach(e=>{
     if(!e.isIntersecting)return;
-    document.querySelectorAll('.tool-node').forEach((n,i)=>setTimeout(()=>n.classList.add('tn-vis'),i*65+100));
+    document.querySelectorAll('.tool-node').forEach((n,i)=>setTimeout(()=>n.classList.add('tn-vis'),i*100+100));
     tObs.unobserve(e.target);
-  });},{threshold:.1});
-  tObs.observe(canvas);
+  });},{threshold:.15});
+  tObs.observe(orbital);
 }
 if(window.innerWidth>960)buildOrbit();
 
@@ -1265,27 +1489,41 @@ document.querySelectorAll('.pc').forEach(card=>{
   card.addEventListener('mouseleave',()=>{card.style.transform='perspective(900px) rotateX(0) rotateY(0) scale(1)';});
 });
 
-/* ─── DISCOVER REVEAL ─── */
-const discObs=new IntersectionObserver(es=>{es.forEach(e=>{
-  if(!e.isIntersecting)return;
-  document.querySelectorAll('.dcard').forEach((c,i)=>{setTimeout(()=>c.classList.add('dvis'),i*80);});
-  discObs.unobserve(e.target);
-});},{threshold:.08});
+/* ─── DISCOVER: duplicate track for seamless loop ─── */
 const discTrack=document.getElementById('discTrack');
-if(discTrack)discObs.observe(discTrack);
-
-/* ─── DRAG-TO-SCROLL ─── */
-const wrap=document.getElementById('discTrackWrap');
-if(wrap){
-  let isDown=false,startX,scrollLeft;
-  wrap.addEventListener('mousedown',e=>{isDown=true;wrap.style.cursor='grabbing';startX=e.pageX-wrap.offsetLeft;scrollLeft=wrap.scrollLeft;});
-  wrap.addEventListener('mouseleave',()=>{isDown=false;wrap.style.cursor='';});
-  wrap.addEventListener('mouseup',()=>{isDown=false;wrap.style.cursor='';});
-  wrap.addEventListener('mousemove',e=>{if(!isDown)return;e.preventDefault();const x=e.pageX-wrap.offsetLeft;wrap.scrollLeft=scrollLeft-(x-startX)*1.2;});
+if(discTrack){
+  const clone=discTrack.innerHTML;
+  discTrack.innerHTML+=clone; // duplicate so loop is seamless
 }
 
-/* ─── ✅ LIGHTBOX ─── */
-const dcards=document.querySelectorAll('.dcard');
+/* ─── DISCOVER: lazy load images with fade-in ─── */
+document.querySelectorAll('.dcard-img').forEach(img=>{
+  if(img.complete && img.naturalWidth>0){
+    img.classList.add('img-loaded');
+  } else {
+    img.addEventListener('load',()=>img.classList.add('img-loaded'));
+    img.addEventListener('error',()=>{img.style.display='none';}); // gradient shows instead
+  }
+});
+
+/* ─── DISCOVER: reveal animation ─── */
+const discObs=new IntersectionObserver(es=>{es.forEach(e=>{
+  if(!e.isIntersecting)return;
+  // Only animate first set (not clones)
+  const originals=discTrack.querySelectorAll('.dcard');
+  const half=originals.length/2;
+  Array.from(originals).slice(0,half).forEach((c,i)=>{setTimeout(()=>c.classList.add('dvis'),i*80);});
+  // Clone set: just show immediately
+  Array.from(originals).slice(half).forEach(c=>c.classList.add('dvis'));
+  discObs.unobserve(e.target);
+});},{threshold:.08});
+if(discTrack)discObs.observe(discTrack);
+
+/* ─── LIGHTBOX ─── */
+// Collect data only from original (first half) dcards
+const allDcards=discTrack?Array.from(discTrack.querySelectorAll('.dcard')):[];
+const origCount=allDcards.length/2;
+const origDcards=allDcards.slice(0,origCount);
 const lbox=document.getElementById('lightbox');
 const lbImg=document.getElementById('lbImg');
 const lbFallback=document.getElementById('lbFallback');
@@ -1294,18 +1532,15 @@ const lbSub=document.getElementById('lbSub');
 const lbDots=document.getElementById('lbDots');
 let lbIdx=0;
 
-/* Collect data from each dcard */
-const lbData=[];
-dcards.forEach((card,i)=>{
+const lbData=origDcards.map(card=>{
   const img=card.querySelector('.dcard-img');
-  const fb=card.querySelector('.dcard-fallback');
-  const label=card.dataset.label||card.querySelector('.dc-label')?.textContent||'';
-  const sub=card.dataset.sub||card.querySelector('.dc-sub')?.textContent||'';
-  const fbClass=fb?fb.className.replace('dcard-fallback','').trim():'';
-  lbData.push({src:img?img.getAttribute('src'):'',label,sub,fbClass});
+  const gradient=card.querySelector('.dcard-gradient');
+  const label=card.dataset.label||'';
+  const sub=card.dataset.sub||'';
+  const fbClass=gradient?gradient.className.replace('dcard-gradient','').trim():'';
+  return {src:img?img.getAttribute('src'):'',label,sub,fbClass};
 });
 
-/* Build dots */
 function buildDots(){
   lbDots.innerHTML='';
   lbData.forEach((_,i)=>{
@@ -1321,13 +1556,10 @@ function openLb(i){
   const d=lbData[i];
   lbImg.style.opacity='0';
   setTimeout(()=>{
-    /* Try loading image */
     const testImg=new Image();
     testImg.onload=()=>{
-      lbImg.src=d.src;
-      lbImg.style.display='block';
-      lbFallback.style.display='none';
-      lbImg.style.opacity='1';
+      lbImg.src=d.src;lbImg.style.display='block';
+      lbFallback.style.display='none';lbImg.style.opacity='1';
     };
     testImg.onerror=()=>{
       lbImg.style.display='none';
@@ -1335,49 +1567,34 @@ function openLb(i){
       lbFallback.className='lb-fallback '+d.fbClass;
     };
     testImg.src=d.src;
-    lbLabel.textContent=d.label;
-    lbSub.textContent=d.sub;
+    lbLabel.textContent=d.label;lbSub.textContent=d.sub;
   },150);
   buildDots();
   lbox.classList.add('lb-open');
   document.body.style.overflow='hidden';
 }
+function closeLb(){lbox.classList.remove('lb-open');document.body.style.overflow='';}
+function moveLb(dir){lbIdx=(lbIdx+dir+lbData.length)%lbData.length;openLb(lbIdx);}
 
-function closeLb(){
-  lbox.classList.remove('lb-open');
-  document.body.style.overflow='';
-}
-
-function moveLb(dir){
-  lbIdx=(lbIdx+dir+lbData.length)%lbData.length;
-  openLb(lbIdx);
-}
-
-/* Click on card → open lightbox */
-dcards.forEach((card,i)=>{
-  card.addEventListener('click',e=>{
-    /* Don't open if user was drag-scrolling */
-    if(Math.abs(wrap.scrollLeft-(wrap._lastScroll||0))>5)return;
-    e.preventDefault();
-    openLb(i);
-  });
-  card.addEventListener('mousedown',()=>{wrap._lastScroll=wrap.scrollLeft;});
+// Click original cards only
+origDcards.forEach((card,i)=>{
+  card.addEventListener('click',()=>openLb(i));
+});
+// Click cloned cards: map index back
+allDcards.slice(origCount).forEach((card,i)=>{
+  card.addEventListener('click',()=>openLb(i));
 });
 
 document.getElementById('lbClose').addEventListener('click',closeLb);
 document.getElementById('lbPrev').addEventListener('click',()=>moveLb(-1));
 document.getElementById('lbNext').addEventListener('click',()=>moveLb(1));
 lbox.addEventListener('click',e=>{if(e.target===lbox)closeLb();});
-
-/* Keyboard navigation */
 document.addEventListener('keydown',e=>{
   if(!lbox.classList.contains('lb-open'))return;
   if(e.key==='Escape')closeLb();
   if(e.key==='ArrowLeft')moveLb(-1);
   if(e.key==='ArrowRight')moveLb(1);
 });
-
-/* Touch swipe support */
 let touchStartX=0;
 lbox.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;},{passive:true});
 lbox.addEventListener('touchend',e=>{
